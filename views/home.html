@@ -1,0 +1,103 @@
+
+<!--<div class="d-flex align-items-end" style="height: calc(100vh - 56px);">-->
+    <div id="cards">
+        <div class="container">
+            <div class="row">
+
+                <div class="col">
+                    <div style="position : fixed; bottom: 0">
+                        <span id="chose-card-1"></span>
+                        <span onclick="homeController.displayCard('1')">
+                            <div id="load-card-1">
+                            </div>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col" style="position : fixed; bottom: 0;padding-left: 20%">
+                    <div style="position : fixed; bottom: 0">
+                        <span id="chose-card-2"></span>
+                        <span onclick="homeController.displayCard('2')">
+                            <div id="load-card-2"></div>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col" style="position : fixed; bottom: 0;padding-left: 40%">
+                    <div style="position : fixed; bottom: 0">
+                        <span id="chose-card-3"></span>
+                        <span onclick="homeController.displayCard('3')">
+                            <div id="load-card-3"></div>
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="col" style="position : fixed; bottom: 0;padding-left: 70%">
+                    <div id ='button-search' style="position : fixed; bottom: 0">
+                        <button class="btn btn-primary" onclick="navigate('webSocket')">Jouer</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<!--</div>-->
+
+
+
+<script id="card-template" type="text/x-handlebars-template">
+    <figure class="card card--{{type}}">
+        <div class="card__image-container">
+            <img src="{{imageAddress}}" alt="{{name}}" class="card__image">
+        </div>
+
+        <figcaption class="card__caption">
+            <h1 class="card__name">{{name}}</h1>
+
+            <h3 class="card__type">e
+                {{type}}
+            </h3>
+
+            <table class="card__stats">
+                <tr>
+                    <th>HP</th>
+                    <td>{{hp}}</td>
+                </tr>
+                <tr>
+                    <th>Attack</th>
+                    <td>{{attack}}</td>
+                </tr>
+
+                <tr>
+                    <th>Defense</th>
+                    <td>{{defense}}</td>
+                </tr>
+
+                <tr>
+                    <th>Special Attack</th>
+                    <td>{{spAttack}}</td>
+                </tr>
+                <tr>
+                    <th>Special Defense</th>
+                    <td>{{spDefense}}</td>
+                </tr>
+                <tr>
+                    <th>Speed</th>
+                    <td>{{speed}}</td>
+                </tr>
+            </table>
+
+            <div class="card__abilities">
+                <h4 class="card__ability">
+                    <span class="card__label">Ability</span>
+                    {{ability1}}
+                </h4>
+                <h4 class="card__ability">
+                    <span class="card__label">Hidden Ability</span>
+                    {{ability2}}
+                </h4>
+            </div>
+        </figcaption>
+    </figure>
+</script>

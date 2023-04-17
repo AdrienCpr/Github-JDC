@@ -1,0 +1,40 @@
+<div class="col d-flex justify-content-center mt-5">
+    <div class="card" style ="background-color: #f5f5f5; width: 600px">
+        <div class="card-body">
+            <div class="row fontInput">
+                <div id="updated"></div>
+                <div class="form-group inputLogin">
+                    <label for="pseudo">Pseudo</label>
+                    <input type="text" class="form-control" id="pseudo" placeholder="Modifier votre pseudo">
+                    <div id="valid-pseudo"></div>
+                </div>
+                <div class="form-group inputLogin">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Modifier votre e-mail">
+                    <div id="valid-email"></div>
+                </div>
+                <div class="form-group inputLogin">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" class="form-control" id="password" placeholder="Modifier votre mot de passe">
+                    <div id="valid-password"></div>
+                </div>
+                <div class="form-group inputLogin">
+                    <label for="password">Confirmation du mot de passe</label>
+                    <input type="password" class="form-control" id="confirm_password" placeholder="Entrer une confirmation du mot de passe">
+                    <div id="valid-confirm-password"></div>
+                </div>
+
+                <div class="form-group inputLogin">
+                    <label for="current-password">Mot de passe actuel</label>
+                    <input type="password" class="form-control" id="current-password" placeholder="Permet de confirmer les changements">
+                    <div id="valid-current-password"></div>
+                </div>
+
+                <div class="col d-flex justify-content-center">
+                    <button onclick="updateUserController.updateUser()" style="margin-top: 10px" class="btn btn-primary">Modifier mes informations</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

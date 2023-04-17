@@ -1,0 +1,69 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-80">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Succès</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-body">
+
+            </div>
+<!--            <div class="modal-footer" id="modal-footer">-->
+<!--                &lt;!&ndash;                <a type="button" class="btn btn-danger" data-bs-dismiss="modal">Non</a>&ndash;&gt;-->
+<!--                &lt;!&ndash;                <span id="buy"></span>&ndash;&gt;-->
+<!--            </div>-->
+            <div class="modal-footer" >
+                <div class="container">
+                    <div class="row" id="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">-->
+<!--    <div id="toast-trophy" class="toast" role="alert" aria-live="assertive" aria-atomic="true">-->
+<!--        <div class="toast-body alert alert-success m-0 rounded d-flex justify-content-between align-items-center">-->
+<!--            Vous venez de débloquer un succès-->
+<!--            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="position-fixed top-0 end-0" style="z-index: 11">
+    <div id="toast-trophy" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body" id="toast">
+            Vous venez de débloquer un succès
+        </div>
+    </div>
+</div>
+
+
+<div id="new-pokemon"></div>
+
+<h1>Collection :</h1>
+
+<div class="container">
+    <div class="row justify-content-end mb-3">
+        <div class="col text-end">
+            <a onclick="collectionController.showSuccess()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Consulter les trophées</a>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form>
+                <div class="form-group">
+                    <input style="border-radius: 25px;" type="text" class="form-control" id="searchBar" onkeyup="collectionController.search()" placeholder="Rechercher un nom, un type ...">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div style="padding-top: 10em" class="container" id="collection-cards">
+</div>
+
