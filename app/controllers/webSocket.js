@@ -6,7 +6,7 @@ class webSocketController extends BaseController {
         super()
         this.model = new JdcModel()
 
-        this.socket = io("http://localhost:3000/");
+        this.socket = io("https://adriencpr.github.io/Github-JDC/");
         console.log(this.socket);
         this.searchPlayer()
     }
