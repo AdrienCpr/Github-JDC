@@ -1,8 +1,5 @@
 import BaseController from "./basecontroller.js";
 import JdcModel from "../model/JdcModel.js";
-import loginController from "./login.js"
-import Login from "./login.js";
-// import {users} from "../../../tp-esimed-2023-CA/src/models/db";
 
 class homeController extends BaseController {
      constructor() {
@@ -10,7 +7,6 @@ class homeController extends BaseController {
         this.model = new JdcModel()
 
         this.loadCardsUser()
-        this.search
     }
 
     async loadCardsUser() {
@@ -72,6 +68,8 @@ class homeController extends BaseController {
     }
 
     async displayCard(id) {
+        this.isTokenValid()
+
         let chose_card = document.getElementById(`chose-card-${id}`)
 
         if (chose_card.innerHTML !== '') {
@@ -118,6 +116,8 @@ class homeController extends BaseController {
     }
 
     searchCard() {
+        this.isTokenValid()
+
         let container = document.getElementById("all-my-card")
         let input, filter, figure, figcaption, i, txtValue;
         input = document.getElementById('searchBar');
@@ -136,6 +136,8 @@ class homeController extends BaseController {
     }
 
     closeChoseCard(id) {
+        this.isTokenValid()
+
         let all_chose_card = [1, 2, 3]
         all_chose_card.forEach((one_chose_card, index) => {
             if (one_chose_card.toString() !== id) {
@@ -145,32 +147,11 @@ class homeController extends BaseController {
     }
 
     async choseCard(id_card_user,card) {
+        this.isTokenValid()
+
         document.getElementById(`chose-card-${id_card_user}`).innerHTML = ``
         await this.model.updateUserChoseCard(decodeToken().id_user, id_card_user, card.id_card ? card.id_card : 0 )
         await this.loadCardsUser()
-    }
-
-
-    searchPlayer() {
-       document.getElementById('button-search').innerHTML = '<button id="button-stop-search" class="btn btn-primary" onclick="homeController.stopSearchPlayer()">1</button>'
-
-
-       let countdown = 1
-
-        this.search = setInterval(function() {
-            countdown++
-
-            if(countdown > 360){
-                return document.getElementById('button-search').innerHTML = '<button class="btn btn-primary" onclick="homeController.searchPlayer()">Après 5min, veuillez cliquer sur jouer à nouveau</button>'
-            }
-
-            document.getElementById('button-stop-search').innerHTML = countdown
-        }, 1000);
-    }
-
-    stopSearchPlayer() {
-        clearInterval(this.search);
-        document.getElementById('button-search').innerHTML = '<button class="btn btn-primary" onclick="homeController.searchPlayer()">Jouer</button>'
     }
 }
 

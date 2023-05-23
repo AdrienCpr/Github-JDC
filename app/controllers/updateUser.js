@@ -16,6 +16,8 @@ class updateUserController extends BaseController {
     }
 
     async updateUser() {
+        this.isTokenValid()
+
         let pseudo = document.getElementById('pseudo')
         let email = document.getElementById('email')
         let password = document.getElementById('password')
@@ -34,6 +36,7 @@ class updateUserController extends BaseController {
         if (pseudo.value.length < 3 || !email.value.match(mailformat) || password.value.length < 6 || password.value !== confirm_password.value || confirm_password.value.length < 1 || (await this.model.checkPassword(decodeToken().id_user, current_password.value)).status !== 200) {
             await this.validation(pseudo, email, password, confirm_password, valid_pseudo, valid_email, valid_password, valid_confirm_password, mailformat, current_password, valid_current_password);
         } else {
+
             await this.validation(pseudo, email, password, confirm_password, valid_pseudo, valid_email, valid_password, valid_confirm_password, mailformat, current_password, valid_current_password);
 
             try {
@@ -44,6 +47,7 @@ class updateUserController extends BaseController {
                 document.getElementById("updated").innerHTML = `<div class="alert alert-success" role="alert">
                                                                         Votre compte a été modifié avec succès
                                                                     </div>`
+                document.getElementById("nav-pseudo-user").innerHTML = `Bonjour ${pseudo.value}`
             } catch (e) {
                 await this.validation(pseudo, email, password, confirm_password, valid_pseudo, valid_email, valid_password, valid_confirm_password, mailformat);
                 if (e.original.detail.includes('email')) {
@@ -62,6 +66,8 @@ class updateUserController extends BaseController {
     }
 
     async validation(pseudo, email, password, confirm_password, valid_pseudo, valid_email, valid_password, valid_confirm_password, mailformat, current_password, valid_current_password) {
+        this.isTokenValid()
+
         if (pseudo.value.length < 3) {
             pseudo.classList.remove("is-valid")
             pseudo.classList.add("is-invalid")

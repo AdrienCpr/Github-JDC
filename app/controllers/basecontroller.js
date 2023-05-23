@@ -1,9 +1,31 @@
+import JdcModel from "../model/JdcModel.js";
+
 export default class BaseController {
     constructor() {
         this.setBackButtonView('index')
         this.load = document.createElement("img")
         this.load.src = "./res/loader2.gif"
         this.load.style.alignContent = "center"
+        this.model = new JdcModel()
+
+        this.isTokenValid()
+    }
+
+    async isTokenValid() {
+        if (sessionStorage.getItem("token")) {
+            let jwt = sessionStorage.getItem("token")
+            let jwtdecode = decodeToken(jwt)
+            if (jwtdecode.exp <= Math.floor(Date.now() / 1000)) {
+                sessionStorage.removeItem("token")
+                localStorage.setItem("session", "true")
+
+                navigate("login")
+            } else {
+                let new_token = await this.model.refreshToken(decodeToken().id_user)
+                sessionStorage.removeItem("token")
+                sessionStorage.setItem("token", new_token.token)
+            }
+        }
     }
     toast(elemId) {
         const toast = new bootstrap.Toast(document.getElementById(elemId))

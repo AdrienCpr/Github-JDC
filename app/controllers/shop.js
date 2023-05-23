@@ -10,9 +10,6 @@ class shopController extends BaseController {
 
         this.loadAllCard()
     }
-    search(){
-        this.globalSearch(this.shop_cards)
-    }
     async loadAllCard() {
         let Cards = await this.model.loadUserCardsWithoutOnesHeHas(decodeToken().id_user)
 
@@ -41,8 +38,15 @@ class shopController extends BaseController {
         this.shop_cards.innerHTML = `${content}`
 
     }
+    search(){
+        this.isTokenValid()
+
+        this.globalSearch(this.shop_cards)
+    }
 
     showPokemonName(id,name,sprite,hp,attack,defense,special_attack,special_defense,speed,price) {
+        this.isTokenValid()
+
         document.getElementById('pokemon-name').textContent = `Voulez vous acheter ${name} ?`;
         document.getElementById('pokemon-picture').innerHTML = `<img src="${sprite}" style=""/>`;
         document.getElementById('stats').innerHTML = `<ul class="list-group">
@@ -57,6 +61,8 @@ class shopController extends BaseController {
     }
 
     async buyCard(id_card, name_card) {
+        this.isTokenValid()
+
         const id_user = decodeToken().id_user
         const user_info = await this.model.getUserInfo(id_user)
         let data = {"id_user": id_user, "id_card": id_card}

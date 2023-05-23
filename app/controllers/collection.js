@@ -12,31 +12,6 @@ class collectionController extends BaseController {
         this.loadUserCard()
         this.isNewPokemon()
     }
-    search(){
-        this.globalSearch(this.collection_cards)
-    }
-
-    async isNewPokemon() {
-        let id_user = decodeToken().id_user
-        let user_info = await this.model.getUserInfo(id_user)
-        let name_pokemon = localStorage.getItem("isNewPokemon")
-        let new_success = !!localStorage.getItem("isNewSucces")
-
-
-        if (name_pokemon !== null) {
-            document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.nationhive.com/sites/www.nationhive.com/files/inline-images/pokemon-go-pokepiece.png" height="25em" width="25em"></a>`
-            document.getElementById("new-pokemon").innerHTML = `<div class="alert alert-success" role="alert">
-                                                                            ${name_pokemon} a été ajouté à votre collection
-                                                                        </div>`
-            localStorage.removeItem("isNewPokemon");
-        }
-
-        if (new_success) {
-            this.toast('toast-trophy')
-            localStorage.removeItem("isNewSucces");
-        }
-    }
-
     async loadUserCard() {
         let Cards = await this.model.getUserCards(decodeToken().id_user)
 
@@ -59,10 +34,34 @@ class collectionController extends BaseController {
 
         })
         this.collection_cards.innerHTML = `${content}`
-
     }
+    async isNewPokemon() {
+        let id_user = decodeToken().id_user
+        let user_info = await this.model.getUserInfo(id_user)
+        let name_pokemon = localStorage.getItem("isNewPokemon")
+        let new_success = !!localStorage.getItem("isNewSucces")
 
+
+        if (name_pokemon !== null) {
+            document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.nationhive.com/sites/www.nationhive.com/files/inline-images/pokemon-go-pokepiece.png" height="25em" width="25em"></a>`
+            document.getElementById("new-pokemon").innerHTML = `<div class="alert alert-success" role="alert">
+                                                                            ${name_pokemon} a été ajouté à votre collection
+                                                                        </div>`
+            localStorage.removeItem("isNewPokemon");
+        }
+
+        if (new_success) {
+            this.toast('toast-trophy')
+            localStorage.removeItem("isNewSucces");
+        }
+    }
+    search(){
+        this.isTokenValid()
+        this.globalSearch(this.collection_cards)
+    }
     async showSuccess() {
+        this.isTokenValid()
+
         let id_user = decodeToken().id_user
         let userTrophies = await this.model.getUserTrophy(id_user)
 
@@ -73,17 +72,16 @@ class collectionController extends BaseController {
         let i = 0
         for (const userTrophy of userTrophies) {
             i++
-            let trophy = await this.model.getTrophyById(userTrophy.id_trophy)
             content += `<div class="col-md-4">
                           <div class="card mb-4">
                             <div class="card-body">
                               <div class="d-flex align-items-center">
                                 <div class="mr-3">
-                                  ${trophy.svg}
+                                  ${userTrophy.svg}
                                 </div>
                                 <div>
-                                  <h5 class="card-title ms-2">${trophy.name}</h5>
-                                  <p class="card-text ms-2">${trophy.description}</p>
+                                  <h5 class="card-title ms-2">${userTrophy.name}</h5>
+                                  <p class="card-text ms-2">${userTrophy.description}</p>
                                 </div>
                               </div>
                             </div>

@@ -4,6 +4,14 @@ export default class JdcModel {
     constructor() {
         this.api = new JdcAPI()
     }
+    async refreshToken(id_user){
+        try {
+            return await this.api.refreshToken(id_user)
+        } catch(e) {
+            Error(e)
+            return e
+        }
+    }
     async getUserInfo(id){
         try {
             return await this.api.getUserInfo(id)
