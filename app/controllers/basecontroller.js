@@ -94,7 +94,7 @@ export default class BaseController {
                                 <th>Speed</th>
                                 <td>${speed}</td>
                             </tr>
-                            ${price? '<th>Prix :</th><td>'+price+'<img src="https://www.nationhive.com/sites/www.nationhive.com/files/inline-images/pokemon-go-pokepiece.png" height="40px" width="40px"></td>': ''}
+                            ${price? '<th>Prix :</th><td>'+price+'<img src="../../res/img/pokepiece-removebg-preview.png" height="40px" width="40px"></td>': ''}
                             </tbody></table>
                         <div class="card__abilities">
 <!--                            <h4 class="card__ability">-->

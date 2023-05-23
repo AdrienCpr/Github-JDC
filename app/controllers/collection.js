@@ -43,7 +43,7 @@ class collectionController extends BaseController {
 
 
         if (name_pokemon !== null) {
-            document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.nationhive.com/sites/www.nationhive.com/files/inline-images/pokemon-go-pokepiece.png" height="25em" width="25em"></a>`
+            document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="../../res/img/pokepiece-removebg-preview.png" height="25em" width="25em"></a>`
             document.getElementById("new-pokemon").innerHTML = `<div class="alert alert-success" role="alert">
                                                                             ${name_pokemon} a été ajouté à votre collection
                                                                         </div>`

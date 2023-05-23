@@ -6,22 +6,26 @@ class loginController extends BaseController {
         super()
         this.model = new JdcModel()
 
+        let return_value = this.isTokenValidLogin();
+        console.log(return_value);
         if (this.isTokenValidLogin()) {
             this.isConnected();
         } else {
             this.isDisconnected();
         }
 
-        if (localStorage.getItem("session") === "true"){
-            localStorage.removeItem("session")
-            this.toast("session")
-            this.isDisconnected();
+        if (localStorage.getItem("session")) {
+            if (localStorage.getItem("session") === "true") {
+                localStorage.removeItem("session")
+                this.toast("session")
+                this.isDisconnected();
+            }
         }
 
         this.isRegistered()
     }
 
-    async isTokenValidLogin() {
+    isTokenValidLogin() {
         if (sessionStorage.getItem("token")) {
             let jwt = sessionStorage.getItem("token")
             let jwtdecode = decodeToken(jwt)
@@ -29,9 +33,6 @@ class loginController extends BaseController {
                 sessionStorage.removeItem("token")
                 return false
             } else {
-                let new_token = await this.model.refreshToken(decodeToken().id_user)
-                sessionStorage.removeItem("token")
-                sessionStorage.setItem("token", new_token.token)
                 return true
             }
         }
@@ -137,7 +138,7 @@ class loginController extends BaseController {
 
         document.getElementById("nav-deconnexion").innerHTML = `
                         <span id="coins"> 
-                               <a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.nationhive.com/sites/www.nationhive.com/files/inline-images/pokemon-go-pokepiece.png" height="25em" width="25em"></a>
+                               <a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="../../res/img/pokepiece-removebg-preview.png" height="25em" width="25em"></a>
                         </span>
                         <div class="dropdown">
                             <a id="nav-pseudo-user" style="color: white; cursor: pointer; text-decoration: none" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
