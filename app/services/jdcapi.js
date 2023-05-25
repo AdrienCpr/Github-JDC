@@ -1,6 +1,6 @@
 export default class JdcAPI {
     constructor() {
-        this.baseurl = "https://www.main-bvxea6i-upsyi6m4ab4hq.fr-3.platformsh.site/"
+        this.baseurl = "https://www.main-bvxea6i-upsyi6m4ab4hq.fr-3.platformsh.site"
         // this.baseurl = "https://www.main-bvxea6i-upsyi6m4ab4hq.fr-3.platformsh.site"
     }
     getUserInfo(id){
