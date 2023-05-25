@@ -23,9 +23,9 @@ class historyController extends BaseController {
                 {column: "date", dir: "desc"}
             ],
             columns: [
-                {title: "Résultat", field: "result",   headerFilter: "select", headerFilterParams: {values: ['Victoire','Défaite']}},
+                {title: "Résultat", field: "result", headerFilter: "select", headerFilterParams: {values: ['win', 'lose','abandon']}},
                 {title: "Adversaire", field: "opponent", headerFilter: "input"},
-                {title: "Pièces", field: "coin_win",hozAlign: "center", headerFilter: "number"},
+                {title: "Pièces", field: "coin_win", hozAlign: "center", headerFilter: "number"},
                 {
                     title: "Date",
                     field: "date",
@@ -41,15 +41,29 @@ class historyController extends BaseController {
                     }
                 }
             ],
+            locale: true, // Activer la localisation
+            langs: {
+                // Définir les traductions en français
+                "fr-fr": {
+                    "pagination": {
+                        "first": "Premier",
+                        "first_title": "Première page",
+                        "prev": "Précédent",
+                        "prev_title": "Page précédente",
+                        "next": "Suivant",
+                        "next_title": "Page suivante",
+                        "last": "Dernier",
+                        "last_title": "Dernière page"
+                    }
+                }
+            }
         });
 
         paginationSelect.addEventListener('change', function(event) {
             table.setPageSize(parseInt(event.target.value));
         });
-
-        // table.on("rowClick", function (e, row) {
-        //     alert("Row " + row.getData().id + " Clicked!!!!");
-        // });
+        
+        table.setLocale("fr-fr");
     }
 }
 

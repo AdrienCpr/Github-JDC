@@ -7,11 +7,13 @@ class homeController extends BaseController {
         this.model = new JdcModel()
 
         this.loadCardsUser()
-    }
+     }
 
     async loadCardsUser() {
 
         let user_info = await this.model.getUserInfo(decodeToken().id_user)
+
+        document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="../../res/img/pokepiece-removebg-preview.png" height="25em" width="25em"></a>`
 
         //Carte 1
             let isCard1 = user_info.id_card_1
@@ -95,7 +97,7 @@ class homeController extends BaseController {
 
         this.closeChoseCard(id);
 
-        chose_card.innerHTML = `<div style="height: 300px; width: 300px; overflow-y: auto; word-wrap: break-word; ">
+        chose_card.innerHTML = `<div style="height: 300px; width: 300px; overflow-y: auto; word-wrap: break-word; background-color: rgba(255,255,255,0.53) ">
                                                                     <ul>
                                                                         <div class="container">
                                                                             <div class="row justify-content-center">
@@ -152,6 +154,16 @@ class homeController extends BaseController {
         document.getElementById(`chose-card-${id_card_user}`).innerHTML = ``
         await this.model.updateUserChoseCard(decodeToken().id_user, id_card_user, card.id_card ? card.id_card : 0 )
         await this.loadCardsUser()
+    }
+
+    async searchPlayer() {
+        let user_info = await this.model.getUserInfo(decodeToken().id_user)
+        if (user_info.id_card_1 === null || user_info.id_card_2 === null || user_info.id_card_3 === null) {
+            var errorMessage = document.getElementById("error-message");
+            errorMessage.textContent = "Vous devez selectionner 3 cartes";
+        } else {
+            navigate('webSocket')
+        }
     }
 }
 

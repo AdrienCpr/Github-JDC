@@ -6,7 +6,7 @@ class webSocketController extends BaseController {
         super()
         this.model = new JdcModel()
 
-        this.socket = io("https://www.main-bvxea6i-upsyi6m4ab4hq.fr-3.platformsh.site/");
+        this.socket = io("http://localhost:3000/");
         console.log(this.socket);
         this.searchPlayer()
     }
@@ -20,9 +20,9 @@ class webSocketController extends BaseController {
             var elapsedTime = Math.floor((currentTime - startTime) / 1000); // en secondes
             var minutes = Math.floor(elapsedTime / 60);
             var seconds = elapsedTime % 60;
-            document.getElementById("room").innerHTML =
+            document.getElementById("chrono").innerHTML = `Recherche d'un adversaire...<br>${
                 (minutes < 10 ? "0" + minutes : minutes) + ":" +
-                (seconds < 10 ? "0" + seconds : seconds);
+                (seconds < 10 ? "0" + seconds : seconds)}`
         }
 
         function startChrono() {
@@ -32,6 +32,7 @@ class webSocketController extends BaseController {
 
         function stopChrono() {
             clearInterval(timerInterval);
+            document.getElementById("chrono").remove()
         }
 
         startChrono();
@@ -42,7 +43,6 @@ class webSocketController extends BaseController {
     }
 
     async searchPlayer() {
-
         let user = await this.model.getUserInfo(decodeToken().id_user)
 
         let chrono = ''
@@ -61,7 +61,9 @@ class webSocketController extends BaseController {
         });
 
         this.socket.on('game-created', async (usersRoom) => {
+
             chrono.stop()
+            document.getElementById('turn').classList.remove("d-none")
             for (const userRoom of usersRoom) {                     //Sur les utilisateurs d'une room
                 if (decodeToken().id_user === userRoom.id_user) {           //Si c'est moi, affiche mes cartes
                     const CardsPlayer = await this.model.getCardsUserByUserId(userRoom.id_user)
@@ -83,11 +85,62 @@ class webSocketController extends BaseController {
                         content = `${this.cardHtml(figureClass, image, name, cardType, HP, attack, defense, special_attack, special_defense, speed)}`
                         document.getElementById(`card-${index}`).innerHTML = content
                     })
+                } else {
+                    let div_opponent = document.getElementById('opponent')
+                    div_opponent.classList.remove("d-none")
+                    div_opponent.innerHTML = `<i class="bi bi-globe2 text-primary"></i> ${(await this.model.getUserInfo(userRoom.id_user)).pseudo}`
                 }
 
 
             }
         });
+
+        function getIconClass(type) {
+            switch (type) {
+                case "normal":
+                    return "fas fa-circle";
+                case "combat":
+                    return "fas fa-fist-raised";
+                case "vol":
+                    return "fas fa-feather-alt";
+                case "poison":
+                    return "fas fa-skull-crossbones";
+                case "sol":
+                    return "fas fa-mountain";
+                case "roche":
+                    return "fas fa-gem";
+                case "insecte":
+                    return "fas fa-bug";
+                case "spectre":
+                    return "fas fa-ghost";
+                case "acier":
+                    return "fas fa-shield-alt";
+                case "feu":
+                    return "fas fa-fire";
+                case "eau":
+                    return "fas fa-tint";
+                case "plante":
+                    return "fas fa-leaf";
+                case "electrik":
+                    return "fas fa-bolt";
+                case "psy":
+                    return "fas fa-brain";
+                case "glace":
+                    return "fas fa-snowflake";
+                case "dragon":
+                    return "fas fa-dragon";
+                case "tenebres":
+                    return "fas fa-moon";
+                case "fee":
+                    return "fas fa-heart";
+                default:
+                    return "";
+            }
+        }
+        function UpperFirstLetter(a){
+            return (a+'').charAt(0).toUpperCase()+a.substr(1);
+        }
+
 
         this.socket.on('turn-player', async (userStart, userCard, RoomFull) => {
             console.log(RoomFull)
@@ -95,7 +148,7 @@ class webSocketController extends BaseController {
             const socket = this.socket;
             let userIdTurn = decodeToken().id_user
             if (userIdTurn === userStart.id_user) { //Définie a qui le tour
-                document.getElementById('room').innerHTML = 'c\'est a vous de commencer'
+                document.getElementById('turn').innerHTML = `<i class="bi bi-arrow-repeat text-primary"></i> C'est a vous de jouer`
 
                 for (let i = 1; i <= 3; i++) {
                     let pokemonChoose = await this.model.getCardsUserByUserId(decodeToken().id_user)
@@ -110,16 +163,17 @@ class webSocketController extends BaseController {
                             let type_1 = pokemonChoose[i - 1].type_1
                             let type_2 = pokemonChoose[i - 1].type_2 ? pokemonChoose[i - 1].type_2 : null
 
-                            let content = `<button id="attack-1-${i}" data-text="0">Normal</button>
-                                           <button id="attack-2-${i}" data-text="1">${type_1}</button>`
+
+                            let content = `<button id="attack-1-${i}" class="btn btn-pokemon btn-normal"   data-text="0"><i class="${getIconClass("normal")}"></i>Normal</button>
+                                           <button id="attack-2-${i}" class="btn btn-pokemon btn-${type_1}"  data-text="1"><i class="${getIconClass(type_1)}"></i> ${UpperFirstLetter(type_1)}</button>`
 
                             if (type_2 !== null) {
-                                content += `<button id="attack-3-${i}" data-text="2">${type_2}</button>`
+                                content += `<button id="attack-3-${i}" class="btn btn-pokemon btn-${type_2}" data-text="2"><i class="${getIconClass(type_2)}"></i> ${UpperFirstLetter(type_2)}</button>`
                             }
 
                             document.getElementById(`chose-action-${i}`).innerHTML = content
 
-                            document.getElementById('pokemon-player-1').innerHTML = `<img src="${pokemonChoose[i - 1].sprite}">`
+                            // document.getElementById('pokemon-player-1').innerHTML = `<img src="${pokemonChoose[i - 1].sprite}">`
 
                             // définir les propriétés onclick ici, après la création des boutons
 
@@ -151,7 +205,7 @@ class webSocketController extends BaseController {
                     }
                 }
             } else {
-                document.getElementById('room').innerHTML = 'c\'est a l\'adversaire de jouer'
+                document.getElementById('turn').innerHTML = `<i class="bi bi-x-octagon text-danger"></i> C'est a l'adversaire de jouer`
                 document.getElementById(`chose-action-1`).innerHTML = ''
                 document.getElementById(`chose-action-2`).innerHTML = ''
                 document.getElementById(`chose-action-3`).innerHTML = ''
@@ -162,25 +216,85 @@ class webSocketController extends BaseController {
         });
 
         this.socket.on('display round', (J1, J2, playerFirstAndPourcent, user1turn, user2turn, playerStartResult, playerFinishResult) => {
-            console.log(playerStartResult, playerFinishResult)
+            // console.log(playerStartResult, playerFinishResult)
             document.getElementById(`chose-action-1`).innerHTML = ''
             document.getElementById(`chose-action-2`).innerHTML = ''
             document.getElementById(`chose-action-3`).innerHTML = ''
             document.getElementById(`card-1`).onclick = ''
             document.getElementById(`card-2`).onclick = ''
             document.getElementById(`card-3`).onclick = ''
-            let text1 = `${J1.pseudo} ${user1turn[1]} avec son ${user1turn[0].name} et ${J2.pseudo} ${user2turn[1]} avec son ${user2turn[0].name}. `
-            let text2 = `C'est ${playerFirstAndPourcent[0].pseudo} qui commence avec ${playerFirstAndPourcent[1]}% de chance de commencer en premier`
-            let text3;
-            let text4;
 
-            playerStartResult[0] ? (text3 = `${playerStartResult[1].name} a tué ${playerStartResult[2].name} sans lui laissé jouer son coup`) : (text3 = `${playerStartResult[1].name} a attaqué ${playerStartResult[2].name} et l'a mit a ${playerStartResult[2].HP} HP. `)
-            playerStartResult[0] ? text4 = '' : playerFinishResult[1]? (text4 = `${playerFinishResult[1].name} a riposté et a tué ${playerFinishResult[2].name}`) : (text4 = `${playerFinishResult[1].name} a attaqué ${playerFinishResult[2].name} et l'a mit a ${playerFinishResult[2].HP} HP. `);
-            document.getElementById('display-result').innerHTML = `${text1}<br>${text2}<br>${text3}<br>${text4}`
-            console.log(user1turn)
-            console.log(user2turn)
-            document.getElementById('pokemon-player-1').innerHTML = `<img src="${user1turn[0].sprite}"><br><p>attaque ${user1turn[2]} ${user1turn[3] ? user1turn[3] : ''}</p>`
-            document.getElementById('pokemon-player-2').innerHTML = `<img src="${user2turn[0].sprite}"><br><p>attaque ${user2turn[2]} ${user2turn[3] ? user2turn[3] : ''}</p>`
+            let result_content = `
+                         ${J1.pseudo} : <img src="${user1turn[0].sprite}" height="80em" width="80em"> <i class="${getIconClass(user1turn[2])}"></i> |
+                         ${playerFirstAndPourcent[0].pseudo === J1.pseudo ? 
+                                                                            `<i class="bi bi-hourglass-top"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i> 
+                                                                                    ${user1turn[3] ? 
+                                                                                                        user1turn[3] 
+                                                                                                   : 
+                                                                                                        ''
+                                                                                    } 
+                                                                                    ${playerStartResult[0] ? 
+                                                                                                                '' 
+                                                                                                           : 
+                                                                                                                playerFinishResult[1] ? 
+                                                                                                                                        `| <i class="fas fa-skull"></i>` 
+                                                                                                                                      : 
+                                                                                                                                        `<i class="fas fa-heart"></i> ${playerFinishResult[2].HP}`
+                                                                                    }
+                                                                            `
+                                                                          : 
+                                                                            `<i class="bi bi-hourglass-bottom"></i> | 
+                                                                                    ${playerStartResult[0] ?
+                                                                                                                `<i class="fas fa-skull"></i>`
+                                                                                                            : 
+                                                                                                                `<i class="fas fa-heart"></i> ${playerStartResult[2].HP} | <i class="fas fa-hand-rock"></i> 
+                                                                                                           ${user1turn[3] ? 
+                                                                                                                            user1turn[3] 
+                                                                                                                        : 
+                                                                                                                    ''
+                                                                                                            }`
+                                                                                    }
+                         `}
+                         
+                         
+                         <br>
+                         
+                         ${J2.pseudo} : <img src="${user2turn[0].sprite}" height="80em" width="80em"> <i class="${getIconClass(user2turn[2])}"></i> |
+                         ${playerFirstAndPourcent[0].pseudo === J2.pseudo ? 
+                                                                            `<i class="bi bi-hourglass-top"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i> 
+                                                                                    ${user1turn[3] ? 
+                                                                                                        user1turn[3] 
+                                                                                                   : 
+                                                                                                        ''
+                                                                                    } 
+                                                                                    ${playerStartResult[0] ? 
+                                                                                                                '' 
+                                                                                                           : 
+                                                                                                                playerFinishResult[1] ?
+                                                                                                                                            `| <i class="fas fa-skull"></i>`
+                                                                                                                                       :
+                                                                                                                                            playerFinishResult[1] ?
+                                                                                                                                                                    `| <i class="fas fa-skull"></i>`
+                                                                                                                                                                  :
+                                                                                                                                                                    `<i class="fas fa-heart"></i> ${playerFinishResult[2].HP}`
+                                                                                    }
+                                                                            ` 
+                                                                          : 
+                                                                            `<i class="bi bi-hourglass-bottom"></i> | 
+                                                                                    ${playerStartResult[0] ?
+                                                                                                                `<i class="fas fa-skull"></i>`
+                                                                                                            :
+                                                                                                                `<i class="fas fa-heart"></i> ${playerStartResult[2].HP} | <i class="fas fa-hand-rock"></i> 
+                                                                                                                        ${user1turn[3] ?
+                                                                                                                                            user1turn[3]
+                                                                                                                                       :
+                                                                                                                                            ''
+                                                                                                                }`
+                                                                                    }
+                                                                            `
+                        }`
+
+            document.getElementById('display-result').innerHTML = result_content
         });
 
         this.socket.on('update-card', (player1 , player1Cards, player2, player2Cards) => {
@@ -224,12 +338,11 @@ class webSocketController extends BaseController {
         });
 
         this.socket.on('end-game', (playerWin) => {
-            document.getElementById('result').innerHTML= `${playerWin.pseudo} a gagné la partie`
-            document.getElementById('room').innerHTML = ''
+            document.getElementById('turn').innerHTML= `<i class="fas fa-trophy"></i> ${playerWin.pseudo} a gagné la partie <i class="fas fa-trophy"></i>`
             document.getElementById(`card-1`).innerHTML = ''
             document.getElementById(`card-2`).innerHTML = ``
             document.getElementById(`card-3`).innerHTML = ''
-            document.getElementById('center-item').innerHTML = `<a onclick="navigate('home')" type="button" class="btn btn-primary">Retour à l'accueil</a>`
+            document.getElementById('return-lobby').innerHTML = `<a onclick="navigate('home')" type="button" class="btn btn-primary">Retour à l'accueil</a>`
         });
     }
 }
