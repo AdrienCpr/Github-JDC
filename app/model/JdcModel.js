@@ -28,10 +28,14 @@ export default class JdcModel {
         try {
             return await this.api.getUser(data)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 401){
+                return 401
+            } else {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            }
         }
     }
 
