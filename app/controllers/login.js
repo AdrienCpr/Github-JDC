@@ -83,6 +83,7 @@ class loginController extends BaseController {
                 sessionStorage.setItem("token", token.token);
                 this.isConnected();
             } else {
+                this.validation(email, mailformat, valid_email, password, valid_password);
                 document.getElementById("registered").innerHTML = `<div class="alert alert-danger" role="alert">
                                                                     Votre e-mail et votre mot de passe ne correspondent pas 
                                                                 </div>`
