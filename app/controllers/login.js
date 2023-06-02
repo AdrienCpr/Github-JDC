@@ -64,33 +64,29 @@ class loginController extends BaseController {
                 </li>`
     }
     async getUser() {
-        try {
-            document.getElementById("registered").innerHTML = ``
+        document.getElementById("registered").innerHTML = ``
 
-            let email = document.getElementById("email")
-            let password = document.getElementById("password")
-            let valid_email = document.getElementById("valid-email")
-            let valid_password = document.getElementById("valid-password")
+        let email = document.getElementById("email")
+        let password = document.getElementById("password")
+        let valid_email = document.getElementById("valid-email")
+        let valid_password = document.getElementById("valid-password")
 
-            let mailformat = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+        let mailformat = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
 
-            if (!email.value.match(mailformat) || password.value.length < 6)
-                this.validation(email, mailformat, valid_email, password, valid_password);
-            else {
-                let data = { "email" : email.value, "password" : password.value}
+        if (!email.value.match(mailformat) || password.value.length < 6)
+            this.validation(email, mailformat, valid_email, password, valid_password);
+        else {
+            let data = { "email" : email.value, "password" : password.value}
 
-                let token = await this.model.getUser(data)
-                if(token !== 401) {
-                    sessionStorage.setItem("token", token.token);
-                    this.isConnected();
-                } else {
-                    document.getElementById("registered").innerHTML = `<div class="alert alert-danger" role="alert">
-                                                                        Votre e-mail et votre mot de passe ne correspondent pas 
-                                                                    </div>`
-                }
+            let token = await this.model.getUser(data)
+            if(token !== 401) {
+                sessionStorage.setItem("token", token.token);
+                this.isConnected();
+            } else {
+                document.getElementById("registered").innerHTML = `<div class="alert alert-danger" role="alert">
+                                                                    Votre e-mail et votre mot de passe ne correspondent pas 
+                                                                </div>`
             }
-        } catch (e) {
-
         }
     }
 
