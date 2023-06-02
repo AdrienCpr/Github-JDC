@@ -10,12 +10,12 @@ class homeController extends BaseController {
      }
 
     async loadCardsUser() {
+        try{
+            let user_info = await this.model.getUserInfo(decodeToken().id_user)
 
-        let user_info = await this.model.getUserInfo(decodeToken().id_user)
+            document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.hebergeur-image.com/upload/86.198.169.188-647062e4e130f.png" height="25em" width="25em"></a>`
 
-        document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="../../res/img/pokepiece-removebg-preview.png" height="25em" width="25em"></a>`
-
-        //Carte 1
+            //Carte 1
             let isCard1 = user_info.id_card_1
             let Card1Info = isCard1 ? await this.model.getCardById(user_info.id_card_1) : ''
 
@@ -30,10 +30,10 @@ class homeController extends BaseController {
             let special_defense1 = isCard1 ? Card1Info.special_defense : "X"
             let speed1 = isCard1 ? Card1Info.speed : "X"
 
-        document.getElementById('load-card-1').innerHTML =  `${this.cardHtml(figureClass1, image1, name1, cardType1, HP1, attack1, defense1, special_attack1, special_defense1, speed1)}`
+            document.getElementById('load-card-1').innerHTML =  `${this.cardHtml(figureClass1, image1, name1, cardType1, HP1, attack1, defense1, special_attack1, special_defense1, speed1)}`
 
 
-        //Carte 2
+            //Carte 2
             let isCard2 = user_info.id_card_2
             let Card2Info = isCard2 ? await this.model.getCardById(user_info.id_card_2): ''
 
@@ -48,9 +48,9 @@ class homeController extends BaseController {
             let special_defense2 = isCard2 ? Card2Info.special_defense : "X"
             let speed2 = isCard2 ? Card2Info.speed : "X"
 
-        document.getElementById('load-card-2').innerHTML =  `${this.cardHtml(figureClass2, image2, name2, cardType2, HP2, attack2, defense2, special_attack2, special_defense2, speed2)}`
+            document.getElementById('load-card-2').innerHTML =  `${this.cardHtml(figureClass2, image2, name2, cardType2, HP2, attack2, defense2, special_attack2, special_defense2, speed2)}`
 
-        //Carte 3
+            //Carte 3
             let isCard3 = user_info.id_card_3
             let Card3Info = isCard3 ? await this.model.getCardById(user_info.id_card_3): ''
 
@@ -65,39 +65,42 @@ class homeController extends BaseController {
             let special_defense3 = isCard3 ? Card3Info.special_defense : "X"
             let speed3 = isCard3 ? Card3Info.speed : "X"
 
-        document.getElementById('load-card-3').innerHTML =  `${this.cardHtml(figureClass3, image3, name3, cardType3, HP3, attack3, defense3, special_attack3, special_defense3, speed3)}`
+            document.getElementById('load-card-3').innerHTML =  `${this.cardHtml(figureClass3, image3, name3, cardType3, HP3, attack3, defense3, special_attack3, special_defense3, speed3)}`
+        } catch (e) {
 
+        }
     }
 
     async displayCard(id) {
-        this.isTokenValid()
+         try {
+             this.isTokenValid()
 
-        let chose_card = document.getElementById(`chose-card-${id}`)
+             let chose_card = document.getElementById(`chose-card-${id}`)
 
-        if (chose_card.innerHTML !== '') {
-            return chose_card.innerHTML = ''
-        }
+             if (chose_card.innerHTML !== '') {
+                 return chose_card.innerHTML = ''
+             }
 
-        this.closeChoseCard(id);
+             this.closeChoseCard(id);
 
-        chose_card.appendChild(this.load)
+             chose_card.appendChild(this.load)
 
-        let Cards = await this.model.loadUserCardsWithoutDeck(decodeToken().id_user);
+             let Cards = await this.model.loadUserCardsWithoutDeck(decodeToken().id_user);
 
-        let content =
-            `<li class="li-card-chose" style="padding-bottom: 5px;padding-top: 5px" onclick='homeController.choseCard(${id}, 0)'>
+             let content =
+                 `<li class="li-card-chose" style="padding-bottom: 5px;padding-top: 5px" onclick='homeController.choseCard(${id}, 0)'>
                 <a><img src="https://cdn-icons-png.flaticon.com/512/59/59254.png" height="50px" width="50px" loading="lazy">Vider l'emplacement</a>
             </li>`
 
-        Cards.forEach( Card => {
-            content += ` <li class="li-card-chose" id='card' style="padding-bottom: 5px;padding-top: 5px" onclick='homeController.choseCard(${id}, ${JSON.stringify(Card)})'>
+             Cards.forEach( Card => {
+                 content += ` <li class="li-card-chose" id='card' style="padding-bottom: 5px;padding-top: 5px" onclick='homeController.choseCard(${id}, ${JSON.stringify(Card)})'>
                             <a id="card-body"><img src="${Card.sprite}" height="100px" width="100px" loading="lazy" > ${Card.name}, ${Card.HP} HP </a>
                         </li>`
-        })
+             })
 
-        this.closeChoseCard(id);
+             this.closeChoseCard(id);
 
-        chose_card.innerHTML = `<div style="height: 300px; width: 300px; overflow-y: auto; word-wrap: break-word; background-color: rgba(255,255,255,0.53) ">
+             chose_card.innerHTML = `<div style="height: 300px; width: 300px; overflow-y: auto; word-wrap: break-word; background-color: rgba(255,255,255,0.53) ">
                                                                     <ul>
                                                                         <div class="container">
                                                                             <div class="row justify-content-center">
@@ -115,6 +118,9 @@ class homeController extends BaseController {
                                                                        ${content}
                                                                     </ul>
                                                                 </div>`
+         } catch (e) {
+
+         }
     }
 
     searchCard() {
@@ -149,21 +155,29 @@ class homeController extends BaseController {
     }
 
     async choseCard(id_card_user,card) {
-        this.isTokenValid()
+         try {
+             this.isTokenValid()
 
-        document.getElementById(`chose-card-${id_card_user}`).innerHTML = ``
-        await this.model.updateUserChoseCard(decodeToken().id_user, id_card_user, card.id_card ? card.id_card : 0 )
-        await this.loadCardsUser()
+             document.getElementById(`chose-card-${id_card_user}`).innerHTML = ``
+             await this.model.updateUserChoseCard(decodeToken().id_user, id_card_user, card.id_card ? card.id_card : 0 )
+             await this.loadCardsUser()
+         } catch (e) {
+
+         }
     }
 
     async searchPlayer() {
-        let user_info = await this.model.getUserInfo(decodeToken().id_user)
-        if (user_info.id_card_1 === null || user_info.id_card_2 === null || user_info.id_card_3 === null) {
-            var errorMessage = document.getElementById("error-message");
-            errorMessage.textContent = "Vous devez selectionner 3 cartes";
-        } else {
-            navigate('webSocket')
-        }
+         try {
+             let user_info = await this.model.getUserInfo(decodeToken().id_user)
+             if (user_info.id_card_1 === null || user_info.id_card_2 === null || user_info.id_card_3 === null) {
+                 var errorMessage = document.getElementById("error-message");
+                 errorMessage.textContent = "Vous devez selectionner 3 cartes";
+             } else {
+                 navigate('webSocket')
+             }
+         } catch (e) {
+
+         }
     }
 }
 

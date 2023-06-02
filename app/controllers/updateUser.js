@@ -10,9 +10,13 @@ class updateUserController extends BaseController {
     }
 
     async setInputValue() {
-        let userInfo = await this.model.getUserInfo(decodeToken().id_user)
-        document.getElementById('pseudo').value = userInfo.pseudo
-        document.getElementById('email').value = userInfo.email
+        try {
+            let userInfo = await this.model.getUserInfo(decodeToken().id_user)
+            document.getElementById('pseudo').value = userInfo.pseudo
+            document.getElementById('email').value = userInfo.email
+        } catch (e) {
+
+        }
     }
 
     async updateUser() {
@@ -32,7 +36,10 @@ class updateUserController extends BaseController {
         let valid_current_password = document.getElementById("valid-current-password")
 
         let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
+        if (current_password.value.length === 0){
+            await this.validation(pseudo, email, password, confirm_password, valid_pseudo, valid_email, valid_password, valid_confirm_password, mailformat, current_password, valid_current_password);
+            return;
+        }
         if (pseudo.value.length < 3 || !email.value.match(mailformat) || password.value.length < 6 || password.value !== confirm_password.value || confirm_password.value.length < 1 || (await this.model.checkPassword(decodeToken().id_user, current_password.value)).status !== 200) {
             await this.validation(pseudo, email, password, confirm_password, valid_pseudo, valid_email, valid_password, valid_confirm_password, mailformat, current_password, valid_current_password);
         } else {
@@ -44,18 +51,21 @@ class updateUserController extends BaseController {
                 const data = {"pseudo": pseudo.value, "email": email.value, "password": password.value}
                 await this.model.updateUserInfo(data, id_user)
 
+                console.log("200 controller")
+
                 document.getElementById("updated").innerHTML = `<div class="alert alert-success" role="alert">
-                                                                        Votre compte a été modifié avec succès
-                                                                    </div>`
+                                                                    Votre compte a été modifié avec succès
+                                                                </div>`
                 document.getElementById("nav-pseudo-user").innerHTML = `Bonjour ${pseudo.value}`
             } catch (e) {
-                await this.validation(pseudo, email, password, confirm_password, valid_pseudo, valid_email, valid_password, valid_confirm_password, mailformat);
-                if (e.original.detail.includes('email')) {
+                // await this.validation(pseudo, email, password, confirm_password, valid_pseudo, valid_email, valid_password, valid_confirm_password, mailformat);
+                if (e.message.includes('email')) {
                     email.classList.remove("is-valid")
                     email.classList.add("is-invalid")
 
                     valid_email.innerHTML = `<p style="color: red">Il existe déjà un compte avec cet email</p>`
-                } else {
+                }
+                if (e.message.includes('pseudo')) {
                     pseudo.classList.remove("is-valid")
                     pseudo.classList.add("is-invalid")
 
@@ -112,7 +122,7 @@ class updateUserController extends BaseController {
 
             valid_confirm_password.innerHTML = ``
         }
-        if ((await this.model.checkPassword(decodeToken().id_user, current_password.value)).status !== 200) {
+        if (current_password.value.length === 0 || (await this.model.checkPassword(decodeToken().id_user, current_password.value)).status !== 200) {
             current_password.classList.remove("is-valid")
             current_password.classList.add("is-invalid")
 

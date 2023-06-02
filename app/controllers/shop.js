@@ -11,31 +11,35 @@ class shopController extends BaseController {
         this.loadAllCard()
     }
     async loadAllCard() {
-        let Cards = await this.model.loadUserCardsWithoutOnesHeHas(decodeToken().id_user)
+        try {
+            let Cards = await this.model.loadUserCardsWithoutOnesHeHas(decodeToken().id_user)
 
-        if (Cards.length === 0) {
-            return this.shop_cards.innerHTML = `<h1>L'utilisateur a acheté toutes les cartes</h1>`
+            if (Cards.length === 0) {
+                return this.shop_cards.innerHTML = `<h1 style="color: white">Votre pokédex est complet</h1>`
+            }
+            let content = ``
+
+            Cards.forEach(Card => {
+                let figureClass = Card.type_2 ? "card--" + (Card.type_2) : "card--" + Card.type_1
+                let image = Card.image
+                let name = Card.name
+                let cardType = Card.type_2 ? Card.type_2 + '/' + Card.type_1 : Card.type_1
+                let HP = Card.HP
+                let attack = Card.attack
+                let defense = Card.defense
+                let special_attack = Card.special_attack
+                let special_defense = Card.special_defense
+                let speed = Card.speed
+                let price = Card.price
+
+                content += `<a onclick="shopController.showPokemonName('${Card.id_card}','${Card.name}','${Card.sprite}','${Card.HP}','${Card.attack}','${Card.defense}','${Card.special_attack}','${Card.special_defense}','${Card.speed}','${Card.price}')" type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                ${this.cardHtml(figureClass, image, name, cardType, HP, attack, defense, special_attack, special_defense, speed, price)}
+                            </a>`
+            })
+            this.shop_cards.innerHTML = `${content}`
+        } catch (e) {
+
         }
-        let content = ``
-
-        Cards.forEach(Card => {
-            let figureClass = Card.type_2 ? "card--" + (Card.type_2) : "card--" + Card.type_1
-            let image = Card.image
-            let name = Card.name
-            let cardType = Card.type_2 ? Card.type_2 + '/' + Card.type_1 : Card.type_1
-            let HP = Card.HP
-            let attack = Card.attack
-            let defense = Card.defense
-            let special_attack = Card.special_attack
-            let special_defense = Card.special_defense
-            let speed = Card.speed
-            let price = Card.price
-
-            content += `<a onclick="shopController.showPokemonName('${Card.id_card}','${Card.name}','${Card.sprite}','${Card.HP}','${Card.attack}','${Card.defense}','${Card.special_attack}','${Card.special_defense}','${Card.speed}','${Card.price}')" type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            ${this.cardHtml(figureClass,image,name,cardType,HP,attack,defense,special_attack,special_defense,speed,price)}
-                        </a>`
-        })
-        this.shop_cards.innerHTML = `${content}`
 
     }
     search(){
@@ -57,27 +61,27 @@ class shopController extends BaseController {
                                                                   <li class="list-group-item">Special Defense : ${special_defense}</li>
                                                                   <li class="list-group-item">Speed : ${speed}</li>
                                                                 </ul>`;
-        document.getElementById('buy').innerHTML = `<a onclick="shopController.buyCard('${id}','${name}')" type="button" class="btn btn-success" data-bs-dismiss="modal">Acheter ${price}<img src="../../res/img/pokepiece-removebg-preview.png" height="25em" width="25em"></a>`
+        document.getElementById('buy').innerHTML = `<a onclick="shopController.buyCard('${id}','${name}')" type="button" class="btn btn-success" data-bs-dismiss="modal">Acheter ${price}<img src="https://www.hebergeur-image.com/upload/86.198.169.188-647062e4e130f.png" height="25em" width="25em"></a>`
     }
 
     async buyCard(id_card, name_card) {
-        this.isTokenValid()
+        try {
+            this.isTokenValid()
 
-        const id_user = decodeToken().id_user
-        const user_info = await this.model.getUserInfo(id_user)
-        let data = {"id_user": id_user, "id_card": id_card}
+            const id_user = decodeToken().id_user
+            const user_info = await this.model.getUserInfo(id_user)
+            let data = {"id_user": id_user, "id_card": id_card}
 
-        try{
             let response = await this.model.createUserCard(data)
             if (response === 400) {
 
                 document.getElementById("insufficient-coins").innerHTML = `<div class="alert alert-danger" role="alert">
-                                                                            Vous n'avez pas assez de pièces pour acheter ${name_card}
-                                                                        </div>`
+                                                                        Vous n'avez pas assez de pièces pour acheter ${name_card}
+                                                                    </div>`
             } else {
                 localStorage.setItem("isNewPokemon", name_card);
 
-                document.getElementById('coins').innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="../../res/img/pokepiece-removebg-preview.png" height="25em" width="25em"></a>`
+                document.getElementById('coins').innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.hebergeur-image.com/upload/86.198.169.188-647062e4e130f.png" height="25em" width="25em"></a>`
 
                 let user_card = await this.model.getUserCards(id_user)
 
@@ -97,7 +101,7 @@ class shopController extends BaseController {
                 navigate('collection')
             }
         } catch (e) {
-            console.log(e)
+
         }
     }
 }

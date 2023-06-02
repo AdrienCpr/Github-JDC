@@ -13,46 +13,57 @@ class collectionController extends BaseController {
         this.isNewPokemon()
     }
     async loadUserCard() {
-        let Cards = await this.model.getUserCards(decodeToken().id_user)
+        try {
+            let Cards = await this.model.getUserCards(decodeToken().id_user)
 
-        let content = ``;
+            let content = ``;
 
-        Cards.forEach(Card => {
-            let figureClass = Card.type_2 ? "card--" + (Card.type_2) : "card--" + Card.type_1
-            let image = Card.image
-            let name = Card.name
-            let cardType = Card.type_2 ? Card.type_2 + '/' + Card.type_1 : Card.type_1
-            let HP = Card.HP
-            let attack = Card.attack
-            let defense = Card.defense
-            let special_attack = Card.special_attack
-            let special_defense = Card.special_defense
-            let speed = Card.speed
+            Cards.forEach(Card => {
+                let figureClass = Card.type_2 ? "card--" + (Card.type_2) : "card--" + Card.type_1
+                let image = Card.image
+                let name = Card.name
+                let cardType = Card.type_2 ? Card.type_2 + '/' + Card.type_1 : Card.type_1
+                let HP = Card.HP
+                let attack = Card.attack
+                let defense = Card.defense
+                let special_attack = Card.special_attack
+                let special_defense = Card.special_defense
+                let speed = Card.speed
 
-            content += `${this.cardHtml(figureClass,image,name,cardType,HP,attack,defense,special_attack,special_defense,speed)}`
+                content += `${this.cardHtml(figureClass,image,name,cardType,HP,attack,defense,special_attack,special_defense,speed)}`
+            })
 
+            if (content === ''){
+                content = `<h1 style="color: white">Votre pokédex est vide</h1>`
+            }
 
-        })
-        this.collection_cards.innerHTML = `${content}`
+            this.collection_cards.innerHTML = `${content}`
+        } catch (e) {
+
+        }
     }
     async isNewPokemon() {
-        let id_user = decodeToken().id_user
-        let user_info = await this.model.getUserInfo(id_user)
-        let name_pokemon = localStorage.getItem("isNewPokemon")
-        let new_success = !!localStorage.getItem("isNewSucces")
+        try {
+            let id_user = decodeToken().id_user
+            let user_info = await this.model.getUserInfo(id_user)
+            let name_pokemon = localStorage.getItem("isNewPokemon")
+            let new_success = !!localStorage.getItem("isNewSucces")
 
 
-        if (name_pokemon !== null) {
-            document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="../../res/img/pokepiece-removebg-preview.png" height="25em" width="25em"></a>`
-            document.getElementById("new-pokemon").innerHTML = `<div class="alert alert-success" role="alert">
-                                                                            ${name_pokemon} a été ajouté à votre collection
-                                                                        </div>`
-            localStorage.removeItem("isNewPokemon");
-        }
+            if (name_pokemon !== null) {
+                document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.hebergeur-image.com/upload/86.198.169.188-647062e4e130f.png" height="25em" width="25em"></a>`
+                document.getElementById("new-pokemon").innerHTML = `<div class="alert alert-success" role="alert">
+                                                                                ${name_pokemon} a été ajouté à votre collection
+                                                                            </div>`
+                localStorage.removeItem("isNewPokemon");
+            }
 
-        if (new_success) {
-            this.toast('toast-trophy')
-            localStorage.removeItem("isNewSucces");
+            if (new_success) {
+                this.toast('toast-trophy')
+                localStorage.removeItem("isNewSucces");
+            }
+        } catch (e) {
+
         }
     }
     search(){
@@ -60,19 +71,20 @@ class collectionController extends BaseController {
         this.globalSearch(this.collection_cards)
     }
     async showSuccess() {
-        this.isTokenValid()
+        try {
+            this.isTokenValid()
 
-        let id_user = decodeToken().id_user
-        let userTrophies = await this.model.getUserTrophy(id_user)
+            let id_user = decodeToken().id_user
+            let userTrophies = await this.model.getUserTrophy(id_user)
 
-        let userTrophiesRemaining = await this.model.getUserTrophyRemaining(id_user)
+            let userTrophiesRemaining = await this.model.getUserTrophyRemaining(id_user)
 
-        let content  = ''
+            let content  = ''
 
-        let i = 0
-        for (const userTrophy of userTrophies) {
-            i++
-            content += `<div class="col-md-4">
+            let i = 0
+            for (const userTrophy of userTrophies) {
+                i++
+                content += `<div class="col-md-4">
                           <div class="card mb-4">
                             <div class="card-body">
                               <div class="d-flex align-items-center">
@@ -87,25 +99,25 @@ class collectionController extends BaseController {
                             </div>
                           </div>
                         </div>`
-        }
+            }
 
-        if (i === 0) {
-            content = `<h5>Jouer pour débloquer des trophées !</h5>`
-        }
+            if (i === 0) {
+                content = `<h5>Jouer pour débloquer des trophées !</h5>`
+            }
 
-        document.getElementById('modal-body').innerHTML = `<h3 style="text-decoration: underline">Mes succès :</h3>
+            document.getElementById('modal-body').innerHTML = `<h3 style="text-decoration: underline">Mes succès :</h3>
                                                                      <div class="row mt-5">
 <!--                                                                        <div class="card-deck card-equal-height">-->
                                                                             ${content}
 <!--                                                                        </div>-->
                                                                     </div>`
 
-        let content2  = ''
+            let content2  = ''
 
-        for (const userTrophyRemaining of userTrophiesRemaining) {
-            let trophy = await this.model.getTrophyById(userTrophyRemaining.id_trophy)
+            for (const userTrophyRemaining of userTrophiesRemaining) {
+                let trophy = await this.model.getTrophyById(userTrophyRemaining.id_trophy)
 
-            content2 += `<div class="col-md-4">
+                content2 += `<div class="col-md-4">
                           <div class="card mb-4">
                             <div class="card-body">
                               <div class="d-flex align-items-center">
@@ -120,15 +132,19 @@ class collectionController extends BaseController {
                             </div>
                           </div>
                         </div>`
-        }
+            }
 
-        document.getElementById('modal-footer').innerHTML = `<h3 style="text-decoration: underline; text-align: left">Succès a débloquer :</h3>
+            document.getElementById('modal-footer').innerHTML = `<h3 style="text-decoration: underline; text-align: left">Succès a débloquer :</h3>
                                                                      <div class="row mt-5">
 <!--                                                                        <div class="card-deck card-equal-height">-->
                                                                             ${content2}
 <!--                                                                        </div>-->
                                                                     </div>`
+        }catch (e) {
+
+        }
     }
+
 }
 
 export default () => window.collectionController = new collectionController()

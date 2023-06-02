@@ -1,7 +1,7 @@
 export default class JdcAPI {
     constructor() {
-        this.baseurl = "https://www.main-bvxea6i-upsyi6m4ab4hq.fr-3.platformsh.site"
-        // this.baseurl = "https://www.main-bvxea6i-upsyi6m4ab4hq.fr-3.platformsh.site"
+        // this.baseurl = "http://localhost:3000"
+        this.baseurl = "https://www.main-bvxea6i-gulw3oeqo2f6a.fr-4.platformsh.site"
     }
     getUserInfo(id){
         const myHeaders= new Headers({"Authorization":`Bearer ${sessionStorage.getItem("token")}`})
@@ -52,7 +52,7 @@ export default class JdcAPI {
                 if (res.status === 201) {
                     resolve()
                 } else {
-                    reject(await res.json())
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))
@@ -66,7 +66,7 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve(await res.json())
                 } else {
-                    reject(await res)
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))
@@ -80,7 +80,7 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve(await res.json())
                 } else {
-                    reject(await res)
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))
@@ -93,7 +93,7 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve(await res.json())
                 } else {
-                    reject(await res)
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))
@@ -107,7 +107,7 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve(await res.json())
                 } else {
-                    reject(await res)
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))
@@ -119,7 +119,7 @@ export default class JdcAPI {
         return new Promise((resolve, reject) => fetch(`${this.baseurl}/users/update/${id_user}`, myInit)
             .then(res => {
                 if (res.status === 200) {
-                    resolve(res.json())
+                    resolve()
                 } else {
                     reject(res.status)
                 }
@@ -148,7 +148,7 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve(await res.json())
                 } else {
-                    reject(await res)
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))
@@ -162,7 +162,7 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve(await res.json())
                 } else {
-                    reject(await res.json())
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))
@@ -175,7 +175,7 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve(await res.json())
                 } else {
-                    reject(await res.json())
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))
@@ -189,9 +189,9 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve()
                 } else {
-                    reject(400)
+                    reject(res.status)
                 }
-            })
+            })()
             .catch(err => reject(err)))
     }
 
@@ -203,7 +203,7 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve(await res.json())
                 } else {
-                    reject(await res.json())
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))
@@ -217,7 +217,7 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve(await res.json())
                 } else {
-                    reject(await res.json())
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))
@@ -231,7 +231,7 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve(await res.json())
                 } else {
-                    reject(await res.json())
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))
@@ -245,7 +245,7 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve(await res.json())
                 } else {
-                    reject(await res.json())
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))
@@ -258,7 +258,7 @@ export default class JdcAPI {
                 if (res.status === 200) {
                     resolve(await res.json())
                 } else {
-                    reject(await res.json())
+                    reject(res.status)
                 }
             })
             .catch(err => reject(err)))

@@ -6,8 +6,6 @@ class loginController extends BaseController {
         super()
         this.model = new JdcModel()
 
-        let return_value = this.isTokenValidLogin();
-        console.log(return_value);
         if (this.isTokenValidLogin()) {
             this.isConnected();
         } else {
@@ -23,20 +21,25 @@ class loginController extends BaseController {
         }
 
         this.isRegistered()
+        this.serverError()
     }
 
     isTokenValidLogin() {
-        if (sessionStorage.getItem("token")) {
-            let jwt = sessionStorage.getItem("token")
-            let jwtdecode = decodeToken(jwt)
-            if (jwtdecode.exp <= Math.floor(Date.now() / 1000)) {
-                sessionStorage.removeItem("token")
-                return false
-            } else {
-                return true
+        try {
+            if (sessionStorage.getItem("token")) {
+                let jwt = sessionStorage.getItem("token")
+                let jwtdecode = decodeToken(jwt)
+                if (jwtdecode.exp <= Math.floor(Date.now() / 1000)) {
+                    sessionStorage.removeItem("token")
+                    return false
+                } else {
+                    return true
+                }
             }
+            return false
+        } catch (e) {
+
         }
-        return false
     }
 
     isRegistered() {
@@ -60,34 +63,34 @@ class loginController extends BaseController {
                     <a class="nav-link" style="cursor: pointer;  color: white" onclick="navigate('register')">Créer un compte</a>
                 </li>`
     }
-
-// sayHello() {
-    //     this.toast("bonjourToast")
-    // }
     async getUser() {
-        document.getElementById("registered").innerHTML = ``
+        try {
+            document.getElementById("registered").innerHTML = ``
 
-        let email = document.getElementById("email")
-        let password = document.getElementById("password")
-        let valid_email = document.getElementById("valid-email")
-        let valid_password = document.getElementById("valid-password")
+            let email = document.getElementById("email")
+            let password = document.getElementById("password")
+            let valid_email = document.getElementById("valid-email")
+            let valid_password = document.getElementById("valid-password")
 
-        let mailformat = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+            let mailformat = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
 
-        if (!email.value.match(mailformat) || password.value.length < 6)
-            this.validation(email, mailformat, valid_email, password, valid_password);
-        else {
-            let data = { "email" : email.value, "password" : password.value}
+            if (!email.value.match(mailformat) || password.value.length < 6)
+                this.validation(email, mailformat, valid_email, password, valid_password);
+            else {
+                let data = { "email" : email.value, "password" : password.value}
 
-            let token = await this.model.getUser(data)
-            if(token !== 401) {
-                sessionStorage.setItem("token", token.token);
-                this.isConnected();
-            } else {
-                document.getElementById("registered").innerHTML = `<div class="alert alert-danger" role="alert">
-                                                                    Votre e-mail et votre mot de passe ne correspondent pas 
-                                                                </div>`
+                let token = await this.model.getUser(data)
+                if(token !== 401) {
+                    sessionStorage.setItem("token", token.token);
+                    this.isConnected();
+                } else {
+                    document.getElementById("registered").innerHTML = `<div class="alert alert-danger" role="alert">
+                                                                        Votre e-mail et votre mot de passe ne correspondent pas 
+                                                                    </div>`
+                }
             }
+        } catch (e) {
+
         }
     }
 
@@ -118,12 +121,13 @@ class loginController extends BaseController {
     }
 
     async isConnected() {
-        let user_info = await this.model.getUserInfo(decodeToken().id_user)
+        try{
+            let user_info = await this.model.getUserInfo(decodeToken().id_user)
 
-        document.getElementById("nav-connexion").innerHTML = ''
+            document.getElementById("nav-connexion").innerHTML = ''
 
-        document.getElementById("nav-pages").innerHTML =
-            `<li class="nav-item">
+            document.getElementById("nav-pages").innerHTML =
+                `<li class="nav-item">
                     <a class="nav-link" style="cursor: pointer" onclick="navigate('home')">Combat</a>
                 </li>
                 <li class="nav-item">
@@ -136,11 +140,11 @@ class loginController extends BaseController {
                     <a class="nav-link" style="cursor: pointer" onclick="navigate('shop')">Boutique</a>
                 </li>`
 
-        document.getElementById("nav-deconnexion").innerHTML = `
+            document.getElementById("nav-deconnexion").innerHTML = `
                         <span id="coins"> 
-                               <a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="../../res/img/pokepiece-removebg-preview.png" height="25em" width="25em"></a>
+                               <a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.hebergeur-image.com/upload/86.198.169.188-647062e4e130f.png" height="25em" width="25em"></a>
                         </span>
-                        <div class="dropdown">
+                        <div class="dropdown me-5">
                             <a id="nav-pseudo-user" style="color: white; cursor: pointer; text-decoration: none" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 Bonjour ${user_info.pseudo}
                             </a>
@@ -152,12 +156,22 @@ class loginController extends BaseController {
                           </ul>
                         </div>`
 
-        navigate("home")
+            navigate("home")
+        } catch (e) {
+
+        }
     }
 
     disconnected() {
         sessionStorage.clear();
         navigate("login")
+    }
+
+    serverError(){
+        if(localStorage.getItem('server error')) {
+            localStorage.removeItem('server error')
+            this.toast("servererror")
+        }
     }
 }
 

@@ -30,12 +30,13 @@ class registerController extends BaseController {
                 navigate("login")
             } catch (e) {
                 this.validation(pseudo, email, password, confirm_password, valid_pseudo, valid_email, valid_password, valid_confirm_password, mailformat);
-                if(e.original.detail.includes('email')) {
+                if(e.message.includes('email')) {
                     email.classList.remove("is-valid")
                     email.classList.add("is-invalid")
 
                     valid_email.innerHTML = `<p style="color: red">Il existe déjà un compte avec cet email</p>`
-                } else {
+                }
+                if (e.message.includes('pseudo')) {
                     pseudo.classList.remove("is-valid")
                     pseudo.classList.add("is-invalid")
 
