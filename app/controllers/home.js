@@ -7,8 +7,15 @@ class homeController extends BaseController {
         this.model = new JdcModel()
 
         this.loadCardsUser()
+         this.tryConnectSameAccountAlert()
      }
 
+    tryConnectSameAccountAlert(){
+        if(localStorage.getItem("sameaccount")) {
+            this.toast('sameaccount')
+            localStorage.removeItem('sameaccount')
+        }
+    }
     async loadCardsUser() {
         try{
             let user_info = await this.model.getUserInfo(decodeToken().id_user)

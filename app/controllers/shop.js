@@ -65,43 +65,40 @@ class shopController extends BaseController {
     }
 
     async buyCard(id_card, name_card) {
-        try {
-            this.isTokenValid()
+        this.isTokenValid()
 
-            const id_user = decodeToken().id_user
-            const user_info = await this.model.getUserInfo(id_user)
-            let data = {"id_user": id_user, "id_card": id_card}
+        const id_user = decodeToken().id_user
+        const user_info = await this.model.getUserInfo(id_user)
+        let data = {"id_user": id_user, "id_card": id_card}
 
-            let response = await this.model.createUserCard(data)
-            if (response === 400) {
+        let response = await this.model.createUserCard(data)
+        console.log('----'+response)
+        if (response === 400) {
 
-                document.getElementById("insufficient-coins").innerHTML = `<div class="alert alert-danger" role="alert">
-                                                                        Vous n'avez pas assez de pièces pour acheter ${name_card}
-                                                                    </div>`
-            } else {
-                localStorage.setItem("isNewPokemon", name_card);
+            document.getElementById("insufficient-coins").innerHTML = `<div class="alert alert-danger" role="alert">
+                                                                    Vous n'avez pas assez de pièces pour acheter ${name_card}
+                                                                </div>`
+        } else {
+            localStorage.setItem("isNewPokemon", name_card);
 
-                document.getElementById('coins').innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.hebergeur-image.com/upload/86.198.169.188-647062e4e130f.png" height="25em" width="25em"></a>`
+            document.getElementById('coins').innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.hebergeur-image.com/upload/86.198.169.188-647062e4e130f.png" height="25em" width="25em"></a>`
 
-                let user_card = await this.model.getUserCards(id_user)
+            let user_card = await this.model.getUserCards(id_user)
 
-                if (user_card.length === 1) {
-                    await this.model.createTrophyUser(id_user,'hoenn-1')
-                    localStorage.setItem("isNewSucces", 'true');
-                }
-                if (user_card.length === 50) {
-                    await this.model.createTrophyUser(id_user,'hoenn-5')
-                    localStorage.setItem("isNewSucces", 'true');
-                }
-                if (user_card.length === 100) {
-                    await this.model.createTrophyUser(id_user,'hoenn-7')
-                    localStorage.setItem("isNewSucces", 'true');
-                }
-
-                navigate('collection')
+            if (user_card.length === 1) {
+                await this.model.createTrophyUser(id_user,'hoenn-1')
+                localStorage.setItem("isNewSucces", 'true');
             }
-        } catch (e) {
+            if (user_card.length === 50) {
+                await this.model.createTrophyUser(id_user,'hoenn-5')
+                localStorage.setItem("isNewSucces", 'true');
+            }
+            if (user_card.length === 100) {
+                await this.model.createTrophyUser(id_user,'hoenn-7')
+                localStorage.setItem("isNewSucces", 'true');
+            }
 
+            navigate('collection')
         }
     }
 }

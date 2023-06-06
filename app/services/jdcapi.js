@@ -183,7 +183,6 @@ export default class JdcAPI {
     createUserCard(data){
         const myHeaders = new Headers({"Content-Type":"application/json", "Authorization":`Bearer ${sessionStorage.getItem("token")}`})
         const myInit= {method: 'POST',headers: myHeaders, body : JSON.stringify(data) ,cache: 'default' }
-
         return new Promise((resolve, reject) => fetch(`${this.baseurl}/user-cards/buyCard`, myInit)
             .then(async res => {
                 if (res.status === 200) {
@@ -191,7 +190,7 @@ export default class JdcAPI {
                 } else {
                     reject(res.status)
                 }
-            })()
+            })
             .catch(err => reject(err)))
     }
 

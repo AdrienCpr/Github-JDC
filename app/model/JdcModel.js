@@ -8,20 +8,30 @@ export default class JdcModel {
         try {
             return await this.api.refreshToken(id_user)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
     async getUserInfo(id){
         try {
             return await this.api.getUserInfo(id)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
     async getUser(data){
@@ -62,30 +72,45 @@ export default class JdcModel {
         try {
             return await this.api.getUserCards(id)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
     async getCardById(id){
         try {
             return await this.api.getCardById(id)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
     async updateUserChoseCard(user_id, id_card_user, id_card){
         try {
             return await this.api.updateUserChoseCard(user_id, id_card_user, id_card)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
 
@@ -93,10 +118,15 @@ export default class JdcModel {
         try {
             return await this.api.getCards()
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
     async updateUserInfo(data, id_user){
@@ -131,50 +161,79 @@ export default class JdcModel {
         try {
             return await this.api.loadUserCardsWithoutDeck(id_user)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if (e === 400) {
+                throw new Error("400")
+            }
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
     async loadUserCardsWithoutOnesHeHas(id_user){
         try {
             return await this.api.loadUserCardsWithoutOnesHeHas(id_user)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
     async getCardsUserByUserId(id_user){
         try {
             return await this.api.getCardsUserByUserId(id_user)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
     async createUserCard(data){
         try {
             return await this.api.createUserCard(data)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            console.log(e)
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
     async getGameHistory(id_user){
         try {
             return await this.api.getGameHistory(id_user)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
 
@@ -182,10 +241,15 @@ export default class JdcModel {
         try {
             return await this.api.getTrophyById(id_trophy)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
 
@@ -193,10 +257,15 @@ export default class JdcModel {
         try {
             return await this.api.getUserTrophy(id_user)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
 
@@ -204,20 +273,30 @@ export default class JdcModel {
         try {
             return await this.api.getUserTrophyRemaining(id_user)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
     async createTrophyUser(id_user,name_trophy){
         try {
             return await this.api.createTrophyUser(id_user,name_trophy)
         } catch(e) {
-            navigate('login');
-            sessionStorage.removeItem('token');
-            localStorage.setItem('server error', "true")
-            throw new Error()
+            if(e === 500) {
+                navigate('login');
+                sessionStorage.removeItem('token');
+                localStorage.setItem('server error', "true")
+                throw new Error()
+            } else {
+                Error(e)
+                return e
+            }
         }
     }
 }
