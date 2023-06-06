@@ -26,7 +26,7 @@ class historyController extends BaseController {
                 columns: [
                     {title: "Résultat", field: "result", headerFilter: "select", headerFilterParams: {values: ['win', 'lose','abandon']}},
                     {title: "Adversaire", field: "opponent", headerFilter: "input"},
-                    {title: "Pièces", field: "coin_win", hozAlign: "center", headerFilter: "number"},
+                    {title: "Pièces", field: "coins", hozAlign: "center", headerFilter: "number"},
                     {
                         title: "Date",
                         field: "date",
