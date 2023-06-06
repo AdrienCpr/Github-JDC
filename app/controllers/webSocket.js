@@ -167,11 +167,11 @@ class webSocketController extends BaseController {
                             let type_2 = pokemonChoose[i - 1].type_2 ? pokemonChoose[i - 1].type_2 : null
 
 
-                            let content = `<button id="attack-1-${i}" class="btn btn-pokemon btn-normal"   data-text="0"><i class="${getIconClass("normal")}"></i>Normal</button>
-                                       <button id="attack-2-${i}" class="btn btn-pokemon btn-${type_1}"  data-text="1"><i class="${getIconClass(type_1)}"></i> ${UpperFirstLetter(type_1)}</button>`
+                            let content = `<button id="attack-1-${i}" class="btn btn-pokemon btn-normal"   data-text="0"><i class="${getIconClass("normal")}"></i>   Normal</button>
+                                       <button id="attack-2-${i}" class="btn btn-pokemon btn-${type_1}"  data-text="1"><i class="${getIconClass(type_1)}"></i>   ${UpperFirstLetter(type_1)}</button>`
 
                             if (type_2 !== null) {
-                                content += `<button id="attack-3-${i}" class="btn btn-pokemon btn-${type_2}" data-text="2"><i class="${getIconClass(type_2)}"></i> ${UpperFirstLetter(type_2)}</button>`
+                                content += `<button id="attack-3-${i}" class="btn btn-pokemon btn-${type_2}" data-text="2"><i class="${getIconClass(type_2)}"></i>   ${UpperFirstLetter(type_2)}</button>`
                             }
 
                             document.getElementById(`chose-action-${i}`).innerHTML = content
