@@ -72,7 +72,6 @@ class shopController extends BaseController {
         let data = {"id_user": id_user, "id_card": id_card}
 
         let response = await this.model.createUserCard(data)
-        console.log('----'+response)
         if (response === 400) {
 
             document.getElementById("insufficient-coins").innerHTML = `<div class="alert alert-danger" role="alert">

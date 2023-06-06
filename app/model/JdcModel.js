@@ -209,7 +209,7 @@ export default class JdcModel {
         try {
             return await this.api.createUserCard(data)
         } catch(e) {
-            console.log(e)
+            // console.log(e)
             if(e === 500) {
                 navigate('login');
                 sessionStorage.removeItem('token');

@@ -55,7 +55,7 @@ class webSocketController extends BaseController {
         });
 
         this.socket.on('joined-lobby', (roomName) => {
-            console.log(`Vous avez rejoint la room: ${roomName}`);      // informe le client quelle room il a rejoint
+            // console.log(`Vous avez rejoint la room: ${roomName}`);      // informe le client quelle room il a rejoint
             // document.getElementById('room').innerHTML = roomName        //affiche le nom de la room
 
             chrono = this.createChrono()
@@ -63,7 +63,7 @@ class webSocketController extends BaseController {
 
 
         this.socket.on('waiting-for-player', () => {
-            console.log(`En attente de joueurs`);          // informe le client qui a rejoint la room
+            // console.log(`En attente de joueurs`);          // informe le client qui a rejoint la room
         });
 
         this.socket.on('game-created', async (usersRoom) => {
@@ -340,14 +340,23 @@ class webSocketController extends BaseController {
             }
         });
 
-        this.socket.on('end-game', (playerWin) => {
+        this.socket.on('new-success', () => {
+            // console.log('NewSucces')
+            localStorage.setItem("isNewSucces", 'true');
+        })
+
+        this.socket.on('end-game', (playerWin, Room) => {
             document.getElementById('turn').innerHTML= `<i class="fa-solid fa-trophy fa-flip" style="color: #ffea00;"></i> ${playerWin.pseudo} a gagné la partie <i class="fa-solid fa-trophy fa-flip" style="color: #ffea00;"></i>`
             document.getElementById(`card-1`).innerHTML = ''
-            document.getElementById(`card-2`).innerHTML = ``
+            document.getElementById(`card-2`).innerHTML = ''
             document.getElementById(`card-3`).innerHTML = ''
             document.getElementById('return-lobby').innerHTML = `<a onclick="navigate('home')" type="button" class="btn btn-primary">Retour à l'accueil</a>`
 
-            this.socket.emit('normal-end-game');
+            let user_id = decodeToken().id_user
+            this.socket.emit('normal-end-game',Room, user_id);
+        });
+
+        this.socket.on('disconnect-normal', () => {
             this.socket.disconnect();
         });
     }

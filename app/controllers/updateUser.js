@@ -51,7 +51,6 @@ class updateUserController extends BaseController {
                 const data = {"pseudo": pseudo.value, "email": email.value, "password": password.value}
                 await this.model.updateUserInfo(data, id_user)
 
-                console.log("200 controller")
 
                 document.getElementById("updated").innerHTML = `<div class="alert alert-success" role="alert">
                                                                     Votre compte a été modifié avec succès
