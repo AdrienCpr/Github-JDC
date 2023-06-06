@@ -230,7 +230,7 @@ class webSocketController extends BaseController {
             let result_content = `
                      ${J1.pseudo} : <img src="${user1turn[0].sprite}" height="80em" width="80em"> <i class="${getIconClass(user1turn[2])}"></i> |
                      ${playerFirstAndPourcent[0].pseudo === J1.pseudo ?
-                `<i class="fa-solid fa-hourglass-start" style="color: #000000;"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i> 
+                `<i class="fa-solid fa-hourglass-start"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i> 
                                                                                 ${user1turn[3] ?
                     user1turn[3]
                     :
@@ -246,7 +246,7 @@ class webSocketController extends BaseController {
                 }
                                                                         `
                 :
-                `<i class="fa-solid fa-hourglass-end" style="color: #000000;"></i> | 
+                `<i class="fa-solid fa-hourglass-end"></i> | 
                                                                                 ${playerStartResult[0] ?
                     `<i class="fas fa-skull"></i>`
                     :
@@ -264,7 +264,7 @@ class webSocketController extends BaseController {
                      
                      ${J2.pseudo} : <img src="${user2turn[0].sprite}" height="80em" width="80em"> <i class="${getIconClass(user2turn[2])}"></i> |
                      ${playerFirstAndPourcent[0].pseudo === J2.pseudo ?
-                `<i class="fa-solid fa-hourglass-start" style="color: #000000;"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i> 
+                `<i class="fa-solid fa-hourglass-start"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i> 
                                                                                 ${user1turn[3] ?
                     user1turn[3]
                     :
@@ -283,7 +283,7 @@ class webSocketController extends BaseController {
                 }
                                                                         `
                 :
-                `<i class="fa-solid fa-hourglass-end" style="color: #000000;"></i> | 
+                `<i class="fa-solid fa-hourglass-end"></i> | 
                                                                                 ${playerStartResult[0] ?
                     `<i class="fas fa-skull"></i>`
                     :
