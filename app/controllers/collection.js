@@ -1,10 +1,9 @@
 import BaseController from "./basecontroller.js";
-import JdcModel from "../model/JdcModel.js";
 
 class collectionController extends BaseController {
     constructor() {
         super()
-        this.model = new JdcModel()
+
         this.collection_cards = document.getElementById('collection-cards')
         this.collection_cards.appendChild(this.load)
 

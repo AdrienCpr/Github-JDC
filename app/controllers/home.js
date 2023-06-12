@@ -1,13 +1,11 @@
 import BaseController from "./basecontroller.js";
-import JdcModel from "../model/JdcModel.js";
 
 class homeController extends BaseController {
      constructor() {
         super()
-        this.model = new JdcModel()
 
         this.loadCardsUser()
-         this.tryConnectSameAccountAlert()
+        this.tryConnectSameAccountAlert()
      }
 
     tryConnectSameAccountAlert(){

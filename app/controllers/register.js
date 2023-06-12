@@ -1,10 +1,9 @@
 import BaseController from "./basecontroller.js";
-import JdcModel from "../model/JdcModel.js";
 
 class registerController extends BaseController {
     constructor() {
         super()
-        this.model = new JdcModel()
+
     }
 
     async createAccount() {

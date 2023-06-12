@@ -1,10 +1,8 @@
 import BaseController from "./basecontroller.js";
-import JdcModel from "../model/JdcModel.js";
 
 class shopController extends BaseController {
     constructor() {
         super()
-        this.model = new JdcModel()
         this.shop_cards = document.getElementById('shop-cards')
         this.shop_cards.appendChild(this.load)
 

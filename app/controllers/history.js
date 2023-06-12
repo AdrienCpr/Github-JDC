@@ -1,10 +1,8 @@
 import BaseController from "./basecontroller.js";
-import JdcModel from "../model/JdcModel.js";
 
 class historyController extends BaseController {
     constructor() {
         super()
-        this.model = new JdcModel()
         this.initTable()
     }
 
