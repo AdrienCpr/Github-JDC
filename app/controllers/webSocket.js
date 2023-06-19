@@ -227,7 +227,7 @@ class webSocketController extends BaseController {
 
             let pseudoPlayerPlayFirst = playerFirstAndPourcent[0].pseudo
             let commentPlayer1 = user1turn[3]
-            let result_content = `${J1.pseudo} : <img src="${user1turn[0].sprite}" height="80em" width="80em"> <i class="${getIconClass(user1turn[2])}"></i> |`
+            let result_content = `${J1.pseudo} : <img src="${user1turn[0].sprite}" height="80em" width="80em"> <i class="${getIconClass(user1turn[2])}"></i> | `
 
             if (pseudoPlayerPlayFirst === J1.pseudo) {
                 result_content += `<i class="fa-solid fa-hourglass-start"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i>`
@@ -236,14 +236,14 @@ class webSocketController extends BaseController {
                 }
                 if (playerStartResult[0] === false){
                     if (playerFinishResult[0] === true) {
-                        result_content += `| <i class="fas fa-skull"></i>`
+                        result_content += ` | <i class="fas fa-skull"></i>`
                     } else {
                         result_content += `<i class="fas fa-heart"></i> ${playerFinishResult[2].HP}`
                     }
                 }
 
             } else {
-                result_content += `<i class="fa-solid fa-hourglass-end"></i> |`
+                result_content += `<i class="fa-solid fa-hourglass-end"></i> | `
                 if (playerStartResult[0] === true) {
                     result_content += `<i class="fas fa-skull"></i>`
                 } else {
@@ -256,15 +256,15 @@ class webSocketController extends BaseController {
 
             result_content += `<br>`
 
-            result_content += `${J2.pseudo} : <img src="${user2turn[0].sprite}" height="80em" width="80em"> <i class="${getIconClass(user2turn[2])}"></i> |`
+            result_content += `${J2.pseudo} : <img src="${user2turn[0].sprite}" height="80em" width="80em"> <i class="${getIconClass(user2turn[2])}"></i> | `
             if (pseudoPlayerPlayFirst === J2.pseudo) {
-                result_content +=  `<i class="fa-solid fa-hourglass-start"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i> `
+                result_content +=  `<i class="fa-solid fa-hourglass-start"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i>`
                 if (user2turn[3]) {
                     result_content += user2turn[3]
                 }
                 if (playerStartResult[0] === false){
                     if (playerFinishResult[0] === true) {
-                        result_content += `| <i class="fas fa-skull"></i>`
+                        result_content += ` | <i class="fas fa-skull"></i>`
                     } else {
                         result_content += `<i class="fas fa-heart"></i> ${playerFinishResult[2].HP}`
                     }
