@@ -50,7 +50,7 @@ class collectionController extends BaseController {
 
 
             if (name_pokemon !== null) {
-                document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.hebergeur-image.com/upload/86.198.169.188-647062e4e130f.png" height="25em" width="25em"></a>`
+                document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://i.postimg.cc/wj7JPX2S/pokepiece-removebg-preview.png" height="25em" width="25em"></a>`
                 document.getElementById("new-pokemon").innerHTML = `<div class="alert alert-success" role="alert">
                                                                                 ${name_pokemon} a été ajouté à votre collection
                                                                             </div>`
