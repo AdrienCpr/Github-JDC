@@ -1,13 +1,11 @@
 import BaseController from "./basecontroller.js";
-import JdcModel from "../model/JdcModel.js";
 
 class webSocketController extends BaseController {
     constructor() {
         super()
-        this.model = new JdcModel()
 
         // this.socket = io("http://localhost:3000/");
-        this.socket = io("https://www.main-bvxea6i-gulw3oeqo2f6a.fr-4.platformsh.site/");
+        this.socket = io("https://www.main-bvxea6i-rvzkpcni75rqs.fr-4.platformsh.site/");
 
         this.searchPlayer()
     }
@@ -167,11 +165,11 @@ class webSocketController extends BaseController {
                             let type_2 = pokemonChoose[i - 1].type_2 ? pokemonChoose[i - 1].type_2 : null
 
 
-                            let content = `<button id="attack-1-${i}" class="btn btn-pokemon btn-normal"   data-text="0"><i class="${getIconClass("normal")}"></i>Normal</button>
-                                       <button id="attack-2-${i}" class="btn btn-pokemon btn-${type_1}"  data-text="1"><i class="${getIconClass(type_1)}"></i> ${UpperFirstLetter(type_1)}</button>`
+                            let content = `<button id="attack-1-${i}" class="btn btn-pokemon btn-normal"   data-text="0"><i class="${getIconClass("normal")}"></i>&nbsp; Normal</button>
+                                       <button id="attack-2-${i}" class="btn btn-pokemon btn-${type_1}"  data-text="1"><i class="${getIconClass(type_1) }"></i>&nbsp; ${UpperFirstLetter(type_1)}</button>`
 
                             if (type_2 !== null) {
-                                content += `<button id="attack-3-${i}" class="btn btn-pokemon btn-${type_2}" data-text="2"><i class="${getIconClass(type_2)}"></i> ${UpperFirstLetter(type_2)}</button>`
+                                content += `<button id="attack-3-${i}" class="btn btn-pokemon btn-${type_2}" data-text="2"><i class="${getIconClass(type_2) }"></i>&nbsp; ${UpperFirstLetter(type_2)}</button>`
                             }
 
                             document.getElementById(`chose-action-${i}`).innerHTML = content
@@ -227,75 +225,62 @@ class webSocketController extends BaseController {
             document.getElementById(`card-2`).onclick = ''
             document.getElementById(`card-3`).onclick = ''
 
-            let result_content = `
-                     ${J1.pseudo} : <img src="${user1turn[0].sprite}" height="80em" width="80em"> <i class="${getIconClass(user1turn[2])}"></i> |
-                     ${playerFirstAndPourcent[0].pseudo === J1.pseudo ?
-                `<i class="fa-solid fa-hourglass-start"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i> 
-                                                                                ${user1turn[3] ?
-                    user1turn[3]
-                    :
-                    ''
-                } 
-                                                                                ${playerStartResult[0] ?
-                    ''
-                    :
-                    playerFinishResult[1] ?
-                        `| <i class="fas fa-skull"></i>`
-                        :
-                        `<i class="fas fa-heart"></i> ${playerFinishResult[2].HP}`
+            let pseudoPlayerPlayFirst = playerFirstAndPourcent[0].pseudo
+            let commentPlayer1 = user1turn[3]
+            let result_content = `${J1.pseudo} : <img src="${user1turn[0].sprite}" height="80em" width="80em"> <i class="${getIconClass(user1turn[2])}"></i> | `
+
+            if (pseudoPlayerPlayFirst === J1.pseudo) {
+                result_content += `<i class="fa-solid fa-hourglass-start"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i>`
+                if (commentPlayer1) {
+                    result_content += commentPlayer1
                 }
-                                                                        `
-                :
-                `<i class="fa-solid fa-hourglass-end"></i> | 
-                                                                                ${playerStartResult[0] ?
-                    `<i class="fas fa-skull"></i>`
-                    :
-                    `<i class="fas fa-heart"></i> ${playerStartResult[2].HP} | <i class="fas fa-hand-rock"></i> 
-                                                                                                       ${user1turn[3] ?
-                        user1turn[3]
-                        :
-                        ''
-                    }`
+                if (playerStartResult[0] === false){
+                    if (playerFinishResult[0] === true) {
+                        result_content += ` | <i class="fas fa-skull"></i>`
+                    } else {
+                        result_content += `<i class="fas fa-heart"></i> ${playerFinishResult[2].HP}`
+                    }
                 }
-                     `}
-                     
-                     
-                     <br>
-                     
-                     ${J2.pseudo} : <img src="${user2turn[0].sprite}" height="80em" width="80em"> <i class="${getIconClass(user2turn[2])}"></i> |
-                     ${playerFirstAndPourcent[0].pseudo === J2.pseudo ?
-                `<i class="fa-solid fa-hourglass-start"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i> 
-                                                                                ${user1turn[3] ?
-                    user1turn[3]
-                    :
-                    ''
-                } 
-                                                                                ${playerStartResult[0] ?
-                    ''
-                    :
-                    playerFinishResult[1] ?
-                        `| <i class="fas fa-skull"></i>`
-                        :
-                        playerFinishResult[1] ?
-                            `| <i class="fas fa-skull"></i>`
-                            :
-                            `<i class="fas fa-heart"></i> ${playerFinishResult[2].HP}`
+
+            } else {
+                result_content += `<i class="fa-solid fa-hourglass-end"></i> | `
+                if (playerStartResult[0] === true) {
+                    result_content += `<i class="fas fa-skull"></i>`
+                } else {
+                    result_content += `<i class="fas fa-heart"></i> ${playerStartResult[2].HP} | <i class="fas fa-hand-rock"></i> `
+                    if (user2turn[3]) {
+                        result_content += user2turn[3]
+                    }
                 }
-                                                                        `
-                :
-                `<i class="fa-solid fa-hourglass-end"></i> | 
-                                                                                ${playerStartResult[0] ?
-                    `<i class="fas fa-skull"></i>`
-                    :
-                    `<i class="fas fa-heart"></i> ${playerStartResult[2].HP} | <i class="fas fa-hand-rock"></i> 
-                                                                                                                    ${user1turn[3] ?
-                        user1turn[3]
-                        :
-                        ''
-                    }`
+            }
+
+            result_content += `<br>`
+
+            result_content += `${J2.pseudo} : <img src="${user2turn[0].sprite}" height="80em" width="80em"> <i class="${getIconClass(user2turn[2])}"></i> | `
+            if (pseudoPlayerPlayFirst === J2.pseudo) {
+                result_content +=  `<i class="fa-solid fa-hourglass-start"></i> ${playerFirstAndPourcent[1]}% | <i class="fas fa-hand-rock"></i>`
+                if (user2turn[3]) {
+                    result_content += user2turn[3]
                 }
-                                                                        `
-            }`
+                if (playerStartResult[0] === false){
+                    if (playerFinishResult[0] === true) {
+                        result_content += ` | <i class="fas fa-skull"></i>`
+                    } else {
+                        result_content += `<i class="fas fa-heart"></i> ${playerFinishResult[2].HP}`
+                    }
+                }
+            } else {
+                result_content += `<i class="fa-solid fa-hourglass-end"></i> | `
+                if (playerStartResult[0]) {
+                    result_content += `<i class="fas fa-skull"></i>`
+                } else {
+                    result_content += `<i class="fas fa-heart"></i> ${playerStartResult[2].HP} | <i class="fas fa-hand-rock"></i> `
+                    if (user1turn[3]){
+                        result_content += user1turn[3]
+                    }
+                }
+            }
+
 
             document.getElementById('display-result').innerHTML = result_content
         });

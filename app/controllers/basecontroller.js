@@ -6,7 +6,9 @@ export default class BaseController {
         this.load = document.createElement("img")
         this.load.src = "./res/loader2.gif"
         this.load.style.alignContent = "center"
+
         this.model = new JdcModel()
+
 
         this.isTokenValid()
     }

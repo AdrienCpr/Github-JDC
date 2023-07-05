@@ -1,7 +1,7 @@
 export default class JdcAPI {
     constructor() {
-        // this.baseurl = "http://localhost:3000"
-        this.baseurl = "https://www.main-bvxea6i-gulw3oeqo2f6a.fr-4.platformsh.site"
+//         this.baseurl = "http://localhost:3000"
+        this.baseurl = "https://www.main-bvxea6i-rvzkpcni75rqs.fr-4.platformsh.site"
     }
     getUserInfo(id){
         const myHeaders= new Headers({"Authorization":`Bearer ${sessionStorage.getItem("token")}`})

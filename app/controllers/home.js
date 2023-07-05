@@ -1,13 +1,11 @@
 import BaseController from "./basecontroller.js";
-import JdcModel from "../model/JdcModel.js";
 
 class homeController extends BaseController {
      constructor() {
         super()
-        this.model = new JdcModel()
 
         this.loadCardsUser()
-         this.tryConnectSameAccountAlert()
+        this.tryConnectSameAccountAlert()
      }
 
     tryConnectSameAccountAlert(){
@@ -20,7 +18,7 @@ class homeController extends BaseController {
         try{
             let user_info = await this.model.getUserInfo(decodeToken().id_user)
 
-            document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.hebergeur-image.com/upload/86.198.169.188-647062e4e130f.png" height="25em" width="25em"></a>`
+            document.getElementById("coins").innerHTML = `<a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://i.postimg.cc/wj7JPX2S/pokepiece-removebg-preview.png" height="25em" width="25em"></a>`
 
             //Carte 1
             let isCard1 = user_info.id_card_1

@@ -1,10 +1,8 @@
 import BaseController from "./basecontroller.js";
-import JdcModel from "../model/JdcModel.js";
 
 class loginController extends BaseController {
     constructor() {
         super()
-        this.model = new JdcModel()
 
         if (this.isTokenValidLogin()) {
             this.isConnected();
@@ -142,7 +140,7 @@ class loginController extends BaseController {
 
             document.getElementById("nav-deconnexion").innerHTML = `
                         <span id="coins"> 
-                               <a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://www.hebergeur-image.com/upload/86.198.169.188-647062e4e130f.png" height="25em" width="25em"></a>
+                               <a style="cursor: pointer; color: white; margin-right: 3em" onclick="navigate('shop')">${user_info.coins} <img src="https://i.postimg.cc/wj7JPX2S/pokepiece-removebg-preview.png" height="25em" width="25em"></a>
                         </span>
                         <div class="dropdown me-5">
                             <a id="nav-pseudo-user" style="color: white; cursor: pointer; text-decoration: none" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
