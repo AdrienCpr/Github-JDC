@@ -1,7 +1,7 @@
 export default class JdcAPI {
     constructor() {
 //         this.baseurl = "http://localhost:3000"
-        this.baseurl = "http://api.pokemon.adriencompare.com"
+        this.baseurl = "https://api.pokemon.adriencompare.com"
     }
     getUserInfo(id){
         const myHeaders= new Headers({"Authorization":`Bearer ${sessionStorage.getItem("token")}`})
