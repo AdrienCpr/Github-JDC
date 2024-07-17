@@ -5,6 +5,7 @@ class webSocketController extends BaseController {
         super()
 
         this.socket = io("http://localhost:3000/");
+        
         // this.socket = io("https://api.pokemon.adriencompare.com/");
 
         this.searchPlayer()
